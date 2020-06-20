@@ -1,0 +1,6 @@
+{
+  "name": "puppeteer-rpc/main",
+  "private": true,
+  "main": "../dist/lib/main.js",
+  "module": "../dist/es/main.js"
+}

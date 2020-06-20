@@ -1,0 +1,6 @@
+{
+  "name": "puppeteer-rpc/browser",
+  "private": true,
+  "main": "../dist/lib/browser.js",
+  "module": "../dist/es/browser.js"
+}
