@@ -2,5 +2,6 @@
   "name": "puppeteer-ipc/browser",
   "private": true,
   "main": "../dist/lib/browser.js",
-  "module": "../dist/es/browser.js"
+  "module": "../dist/es/browser.js",
+  "types": "../dist/lib/browser.d.ts"
 }

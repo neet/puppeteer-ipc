@@ -2,5 +2,6 @@
   "name": "puppeteer-ipc/main",
   "private": true,
   "main": "../dist/lib/main.js",
-  "module": "../dist/es/main.js"
+  "module": "../dist/es/main.js",
+  "types": "../dist/lib/main.d.ts"
 }
