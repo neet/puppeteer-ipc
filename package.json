@@ -1,8 +1,29 @@
 {
   "name": "puppeteer-ipc",
+  "description": "Lightweight wrapper for mutual communication on Puppeteer, inspired by Electron",
   "version": "1.0.0",
   "author": "Ryo Igarashi <n33t5hin@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "rollup -c rollup.config.js"
+  },
+  "files": [
+    "main",
+    "browser",
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neet/puppeteer-ipc.git"
+  },
+  "keywords": [
+    "puppeteer",
+    "ipc"
+  ],
+  "bugs": {
+    "url": "https://github.com/neet/puppeteer-ipc/issues"
+  },
+  "homepage": "https://github.com/neet/puppeteer-ipc#readme",
   "dependencies": {
     "eventemitter3": "^4.0.4"
   },
