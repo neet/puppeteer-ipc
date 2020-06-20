@@ -5,7 +5,7 @@ import {
   EventArgs,
 } from "eventemitter3";
 
-export class IPC<T extends ValidEventTypes> extends EventEmitter<T> {
+export class IPC<T extends ValidEventTypes = string> extends EventEmitter<T> {
   constructor() {
     super();
     window.__TO_BROWSER__ = this.receive;

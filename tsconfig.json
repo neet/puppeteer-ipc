@@ -18,5 +18,6 @@
     "removeComments": false,
     "skipLibCheck": true,
     "strict": true
-  }
+  },
+  "include": ["src/**/*", "global.ts"],
 }

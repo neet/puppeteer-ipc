@@ -27,22 +27,11 @@ export default [
     output: {
       file: './dist/lib/browser.js',
       format: 'umd',
-      name: 'puppeteer-rpc',
+      name: 'puppeteer-ipc/browser',
     },
     plugins: [
       resolve({ preferBuiltins: true }),
       commonjs(),
-      typescript(),
-    ],
-  },
-  // Browser + ESModule
-  {
-    input: './src/browser.ts',
-    output: {
-      file: './dist/esm/browser.js',
-      format: 'esm',
-    },
-    plugins: [
       typescript(),
     ],
   },
