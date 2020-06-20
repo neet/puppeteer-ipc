@@ -1,5 +1,5 @@
 import { Page } from "puppeteer";
-import EventEmitter, { ValidEventTypes, EventNames, EventArgs } from "eventemitter3";
+import EventEmitter, { ValidEventTypes, EventNames, EventArgs } from 'eventemitter3';
 
 import { serialize as s } from "../utils/serialize";
 
@@ -10,8 +10,8 @@ export class IPC<T extends ValidEventTypes> extends EventEmitter<T> {
 
   static async init(page: Page) {
     const ipc = new IPC(page);
-    ipc.page.exposeFunction("__TO_NODE__", ipc.receive);
-    ipc.page.waitForFunction("() => __TO_NODE__ != null");
+    await ipc.page.exposeFunction("__TO_MAIN__", ipc.receive);
+    await ipc.page.waitForFunction("() => __TO_MAIN__ != null");
     return ipc;
   }
 
@@ -19,9 +19,9 @@ export class IPC<T extends ValidEventTypes> extends EventEmitter<T> {
     this.emit(name, ...payload);
   };
 
-  async send<U extends EventNames<T>>(name: U, payload: EventArgs<T, U>) {
+  async send<U extends EventNames<T>>(name: U, payload: EventArgs<T, U>[0]) {
     await this.page.evaluate(
-      s`window.__TO_BROWSER__.emit(${name}, ${payload})`
+      s`window.__TO_BROWSER__(${name}, ${payload})`
     );
   }
 }

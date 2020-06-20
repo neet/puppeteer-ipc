@@ -19,6 +19,6 @@ export class IPC<T extends ValidEventTypes> extends EventEmitter<T> {
   };
 
   async send<U extends EventNames<T>>(name: U, ...payloads: EventArgs<T, U>) {
-    await window.__TO_NODE__(name, ...payloads);
+    await window.__TO_MAIN__(name, ...payloads);
   }
 }
