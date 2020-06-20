@@ -59,33 +59,29 @@ await ipc.send("ping");
 - options.distPath `string` Path for JS file of `puppeteer-ipc/browser`
 - options.skipBrowserInitialization `boolean` Whether or not to skip initialization such as loading JS file on browser.
 
-This is a class that controls IPC on Node.js side. Since this class extends `EventEmitter`, you can also inherited methods such as `on`, `off` and `once`.
+This is a class that controls IPC on Node.js side. Since this class extends `EventEmitter`, you can also use inherited methods such as `on`, `off` and `once`.
 
 #### `start`
 
 - returns: `Promise<void>` Nothing
 
-Exposes Node.js APIs on the browser and wait for them to be loaded.
+Exposes Node.js gateway methods to the browser and wait for them to be loaded.
 
 #### `send`
 
 - `name` `string` Name of the event
-- `...payloads` `unknown[]` Payloads of the event which will be passed to the callback function
+- `...payloads` `unknown[]` Payloads of the event which will be passed to the callback function. **These values must be serializable to JSON**
 - returns: `Promise<void>` Nothing
 
-A method that sends event to browser from Node.js.
+A method that sends an event to the browser from Node.js.
 
 ### `IPC` (`puppeteer-ipc/browser`)
 
-This is a class that controls IPC on Node.js side. Since this class extends `EventEmitter`, you can also inherited methods such as `on`, `off` and `once`.
+This is a class that controls IPC on the browser side.
 
 #### `IPC.send`
 
-- `name` `string` Name of the event
-- `...payloads` `unknown[]` Payloads of the event which will be passed to the callback function
-- returns: `Promise<void>` Nothing
-
-A method that sends event to browser from Node.js.
+A method that sends an event to Node.js from the browser. Behaves exactly the same as `puppeteer-ipc/main`'s `send` method.
 
 ## TypeScript
 
@@ -93,7 +89,7 @@ A method that sends event to browser from Node.js.
 
 ### Event Callbacks
 
-You can pass map of event name and it's argument to IPC as a generic parameter:
+You can pass a map of event name and its arguments to IPC as a generic parameter to annotate parameters:
 
 ```ts
 const ipc = new IPC<{
@@ -108,14 +104,14 @@ ipc.on("my_event", (a, b) => {
 
 ### Typing Module on Browser
 
-If you use JS bundler for browsers such as webpack, then you can use safely-typed import statement as well as browser side.
+If you use JS bundler for browsers such as webpack, then you can use import statement and consume the type information.
 
 ```ts
 // Browser side
 import { IPC } from "puppeteer-ipc/browser";
 ```
 
-In this case, you can pass option `skipBrowserInitialization: true` to avoid creating IPC instance twice:
+Note that in this case, you can pass option `skipBrowserInitialization: true` to avoid creating IPC instance twice:
 
 ```ts
 // Node.js side
