@@ -1,7 +1,7 @@
 # puppeteer-ipc
 
-<a href="https://www.npmjs.com/package/puppeteer-ipc"><img src="https://img.shields.io/npm/v/puppeteer-ipc.svg" alt="npm"/></a>
-<a href="https://github.com/neet/puppeteer-ipc/actions"><img src="https://github.com/neet/puppeteer-ipc/workflows/CI/badge.svg" /></a>
+![NPM](https://img.shields.io/npm/v/puppeteer-ipc.svg)
+![Node.js CI](https://github.com/neet/puppeteer-ipc/workflows/Node.js%20CI/badge.svg)
 
 Lightweight wrapper for mutual communication on Puppeteer, inspired by Electron.
 
