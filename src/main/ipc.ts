@@ -9,12 +9,13 @@ import { serialize as s } from "../utils/serialize";
 
 export interface IPCInitParams {
   distPath?: string;
+  skipBrowserInitialization?: boolean;
 }
 
 export class IPC<T extends ValidEventTypes = string> extends EventEmitter<T> {
   constructor(
     private readonly page: Page,
-    private readonly options?: IPCInitParams
+    private readonly options: IPCInitParams = {},
   ) {
     super();
   }
@@ -22,12 +23,15 @@ export class IPC<T extends ValidEventTypes = string> extends EventEmitter<T> {
   async start() {
     const ipc = new IPC(this.page);
 
-    await ipc.page.addScriptTag({
-      path: this.options?.distPath ?? require.resolve("puppeteer-ipc/browser"),
-    });
-    await ipc.page.waitForFunction(
-      "() => window['puppeteer-ipc/browser'] != null"
-    );
+    if (!this.options.skipBrowserInitialization) {
+      await ipc.page.addScriptTag({
+        path: this.options?.distPath ?? require.resolve("puppeteer-ipc/browser"),
+      });
+      await ipc.page.waitForFunction(
+        "() => window['puppeteer-ipc/browser'] != null"
+      );
+    }
+
     await ipc.page.exposeFunction("__TO_MAIN__", ipc.receive);
     await ipc.page.waitForFunction("() => __TO_MAIN__ != null");
     return ipc;
