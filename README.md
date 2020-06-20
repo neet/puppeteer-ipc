@@ -5,6 +5,12 @@
 
 Lightweight wrapper for mutual communication on Puppeteer, inspired by Electron.
 
+## Install
+
+```
+npm i puppeteer puppeteer-ipc
+```
+
 ## Usage
 
 ```js
