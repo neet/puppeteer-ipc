@@ -1,11 +1,11 @@
-import { Page } from "puppeteer";
 import EventEmitter, {
-  ValidEventTypes,
-  EventNames,
   EventArgs,
-} from "eventemitter3";
+  EventNames,
+  ValidEventTypes,
+} from 'eventemitter3';
+import { Page } from 'puppeteer';
 
-import { serialize as s } from "../utils/serialize";
+import { serialize as s } from '../utils/serialize';
 
 export interface IPCInitParams {
   distPath?: string;
@@ -25,15 +25,16 @@ export class IPC<T extends ValidEventTypes = string> extends EventEmitter<T> {
 
     if (!this.options.skipBrowserInitialization) {
       await ipc.page.addScriptTag({
-        path: this.options?.distPath ?? require.resolve("puppeteer-ipc/browser"),
+        path:
+          this.options?.distPath ?? require.resolve('puppeteer-ipc/browser'),
       });
       await ipc.page.waitForFunction(
-        "() => window['puppeteer-ipc/browser'] != null"
+        "() => window['puppeteer-ipc/browser'] != null",
       );
     }
 
-    await ipc.page.exposeFunction("__TO_MAIN__", ipc.receive);
-    await ipc.page.waitForFunction("() => __TO_MAIN__ != null");
+    await ipc.page.exposeFunction('__TO_MAIN__', ipc.receive);
+    await ipc.page.waitForFunction('() => __TO_MAIN__ != null');
     return ipc;
   }
 

@@ -11,6 +11,7 @@ export default [
       format: 'cjs',
     },
     plugins: [commonjs(), typescript()],
+    external: ['eventemitter3'],
   },
   // Node.js + ESModule
   {
@@ -20,6 +21,7 @@ export default [
       format: 'esm',
     },
     plugins: [typescript()],
+    external: ['eventemitter3'],
   },
   // Browser + UMD
   {
@@ -29,10 +31,6 @@ export default [
       format: 'umd',
       name: 'puppeteer-ipc/browser',
     },
-    plugins: [
-      resolve({ preferBuiltins: true }),
-      commonjs(),
-      typescript(),
-    ],
+    plugins: [resolve({ preferBuiltins: true }), commonjs(), typescript()],
   },
 ];

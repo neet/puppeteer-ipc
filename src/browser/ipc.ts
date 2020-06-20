@@ -1,9 +1,9 @@
 import {
-  EventEmitter,
-  ValidEventTypes,
-  EventNames,
   EventArgs,
-} from "eventemitter3";
+  EventEmitter,
+  EventNames,
+  ValidEventTypes,
+} from 'eventemitter3';
 
 export class IPC<T extends ValidEventTypes = string> extends EventEmitter<T> {
   constructor() {
