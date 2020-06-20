@@ -41,6 +41,35 @@ await ipc.send('ping');
  - [`page.evaluate`](https://pptr.dev/#?product=Puppeteer&show=api-pageevaluatepagefunction-args) to send data to the browser from Node.js process
  - [`page.exposeFunction`](https://pptr.dev/#?product=Puppeteer&show=api-pageexposefunctionname-puppeteerfunction) to send data to Node.js from the browser process
 
+## API
+### `IPC` (`puppeteer-ipc/main`)
+- page `Page` Puppeteer's page instance
+- options.distPath `string` Path for JS file of `puppeteer-ipc/browser`
+- options.skipBrowserInitialization `boolean` Whether or not to skip initialization such as loading JS file on browser.
+
+This is a class that controls IPC on Node.js side. Since this class extends `EventEmitter`, you can also inherited methods such as `on`, `off` and `once`.
+
+#### `start`
+- returns: `Promise<void>` Nothing
+
+Exposes Node.js APIs on the browser and wait for them to be loaded.
+
+#### `send`
+- `name` `string` Name of the event
+- `...payloads` `unknown[]` Payloads of the event which will be passed to the callback function
+- returns: `Promise<void>` Nothing
+
+A method that sends event to browser from Node.js.
+
+### `IPC` (`puppeteer-ipc/browser`)
+
+This is a class that controls IPC on Node.js side. Since this class extends `EventEmitter`, you can also inherited methods such as `on`, `off` and `once`.
+
+#### `IPC.send`
+
+A method that sends event to browser from Node.js.
+
+
 ## TypeScript
 
 `puppeteer-ipc` is written in TypeScript and fully supports its major features.
