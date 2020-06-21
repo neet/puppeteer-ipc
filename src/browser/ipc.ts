@@ -1,24 +1,31 @@
-import {
-  EventArgs,
-  EventEmitter,
-  EventNames,
-  ValidEventTypes,
-} from 'eventemitter3';
+import { EventEmitter } from 'eventemitter3';
 
-export class IPC<T extends ValidEventTypes = string> extends EventEmitter<T> {
+class IPC extends EventEmitter {
   constructor() {
     super();
     window.__TO_BROWSER__ = this.receive;
   }
 
-  private receive = <U extends EventNames<T>>(
-    name: U,
-    ...payloads: EventArgs<T, U>
-  ) => {
-    this.emit(name, ...payloads);
+  private receive = (name: string, ...args: unknown[]) => {
+    this.emit(name, ...args);
   };
 
-  async send<U extends EventNames<T>>(name: U, ...payloads: EventArgs<T, U>) {
-    await window.__TO_MAIN__(name, ...payloads);
+  async send(name: string, ...args: unknown[]) {
+    await window.__TO_MAIN__(name, ...args);
+  }
+
+  async request(name: string, ...args: unknown[]) {
+    return new Promise((resolve) => {
+      this.once(`${name}_response`, resolve);
+      this.send(name, ...args);
+    });
+  }
+
+  respond(name: string, fn: (...args: unknown[]) => unknown) {
+    this.once(name, (data) => {
+      this.send(`${name}_response`, fn(data));
+    });
   }
 }
+
+export const ipc = new IPC();
