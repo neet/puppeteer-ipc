@@ -3,6 +3,10 @@ import { EventEmitter } from 'eventemitter3';
 class IPC extends EventEmitter {
   constructor() {
     super();
+    this.expose();
+  }
+
+  private expose() {
     window.__TO_BROWSER__ = this.receive;
   }
 
@@ -28,4 +32,5 @@ class IPC extends EventEmitter {
   }
 }
 
-export const ipc = new IPC();
+// Singleton
+export default new IPC();

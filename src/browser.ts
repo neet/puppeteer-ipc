@@ -1,1 +1,1 @@
-export * from './browser/ipc';
+export { default } from './browser/ipc';

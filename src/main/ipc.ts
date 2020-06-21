@@ -5,31 +5,35 @@ import { serialize as s } from '../utils/serialize';
 
 export interface IPCInitParams {
   distPath?: string;
-  skipBrowserInitialization?: boolean;
+  useESM?: boolean;
 }
 
-export class IPC extends EventEmitter {
-  constructor(
+class IPC extends EventEmitter {
+  private constructor(
     private readonly page: Page,
     private readonly options: IPCInitParams = {},
   ) {
     super();
   }
 
-  async start() {
-    if (!this.options.skipBrowserInitialization) {
-      await this.page.addScriptTag({
-        path:
-          this.options?.distPath ?? require.resolve('puppeteer-ipc/browser'),
-      });
-      await this.page.waitForFunction(
-        "() => window['puppeteer-ipc/browser'] != null",
-      );
-    }
+  static async init(page: Page, options?: IPCInitParams) {
+    const ipc = new IPC(page, options);
+    if (!options?.useESM) await ipc.loadUMD();
+    await ipc.expose();
+    return ipc;
+  }
 
+  private async expose() {
     await this.page.exposeFunction('__TO_MAIN__', this.receive);
     await this.page.waitForFunction('() => __TO_MAIN__ != null');
-    return this;
+  }
+
+  private async loadUMD() {
+    const distPath =
+      this.options?.distPath ?? require.resolve('puppeteer-ipc/browser');
+
+    await this.page.addScriptTag({ path: distPath });
+    await this.page.waitForFunction('() => ipc != null');
   }
 
   private receive = (name: string, ...args: unknown[]) => {
@@ -53,3 +57,8 @@ export class IPC extends EventEmitter {
     });
   }
 }
+
+export const createIPCSession = async (page: Page, options?: IPCInitParams) => {
+  const ipc = await IPC.init(page, options);
+  return ipc;
+};

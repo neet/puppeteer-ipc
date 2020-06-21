@@ -29,7 +29,7 @@ export default [
     output: {
       file: './dist/lib/browser.js',
       format: 'umd',
-      name: 'puppeteer-ipc/browser',
+      name: 'ipc',
     },
     plugins: [resolve({ preferBuiltins: true }), commonjs(), typescript()],
   },
