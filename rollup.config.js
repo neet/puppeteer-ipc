@@ -33,4 +33,14 @@ export default [
     },
     plugins: [resolve({ preferBuiltins: true }), commonjs(), typescript()],
   },
+  // Browser + ESModule
+  {
+    input: './src/browser.ts',
+    output: {
+      file: './dist/esm/browser.js',
+      format: 'esm',
+    },
+    plugins: [typescript()],
+    external: ['eventemitter3'],
+  },
 ];
