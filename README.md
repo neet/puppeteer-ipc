@@ -13,6 +13,8 @@ npm i puppeteer puppeteer-ipc
 
 ## Usage
 
+### Ping-pong Example
+
 ```js
 import puppeteer from "puppeteer";
 import { IPC } from "puppeteer-ipc/main";
@@ -42,6 +44,31 @@ ipc.on("pong", (data) => {
 await ipc.send("ping");
 
 // Output: Message from the browser: hello
+```
+
+### Synchronous Call
+
+```js
+import puppeteer from "puppeteer";
+import { IPC } from "puppeteer-ipc/main";
+
+(async () => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.goto("https://example.com");
+
+  const ipc = new IPC(page);
+  ipc.start();
+
+  page.evaluate(`
+    ipc.respond('getHref', location.href);
+  `);
+
+  ipc.request('getHref')
+    .then(href => console.log(`Href: ${href}`));
+});
+
+// Output: Href: https://example.com
 ```
 
 ## How It Works
