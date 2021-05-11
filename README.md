@@ -21,8 +21,7 @@ const browser = await puppeteer.launch();
 const page = await browser.newPage();
 await page.goto("https://example.com");
 
-const ipc = new IPC(page);
-await ipc.start();
+const ipc = await new IPC(page).start();
 
 // ----- Browser side -----
 await page.evaluate(`
