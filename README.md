@@ -21,8 +21,7 @@ const browser = await puppeteer.launch();
 const page = await browser.newPage();
 await page.goto("https://example.com");
 
-const ipc = new IPC(page);
-await ipc.start();
+const ipc = await new IPC(page).start();
 
 // ----- Browser side -----
 await page.evaluate(`
@@ -36,7 +35,7 @@ await page.evaluate(`
 
 // ----- Node.js side -----
 ipc.on("pong", (data) => {
-  console.log(`Message from the browser: ${data.message}`);
+  console.log(`Message from the browser: ${data}`);
   browser.close();
 });
 await ipc.send("ping");
@@ -63,7 +62,7 @@ This is a class that controls IPC on Node.js side. Since this class extends `Eve
 
 #### `start`
 
-- returns: `Promise<void>` Nothing
+- returns: `Promise<IPC>` the IPC instance
 
 Exposes Node.js gateway methods to the browser and wait for them to be loaded.
 
